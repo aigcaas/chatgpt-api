@@ -1,7 +1,7 @@
 import dotenv from 'dotenv-safe'
 import { oraPromise } from 'ora'
 
-import { ChatGPTAPI } from '../src'
+import { ChatGPTAPI } from '../../src'
 
 dotenv.config()
 
@@ -14,13 +14,13 @@ dotenv.config()
  */
 async function main() {
   const api = new ChatGPTAPI({
-    apiKey: process.env.OPENAI_API_KEY,
-    apiBaseUrl: process.env.OPENAI_API_BASE_URL,
+    isAigcaas: true,
+    aigcaasSecretId: process.env.AIGCAAS_SECRET_ID,
+    aigcaasSecretKey: process.env.AIGCAAS_SECRET_KEY,
     debug: false
   })
 
-  const prompt =
-    'Write a python version of bubble sort. Do not include example usage.'
+  const prompt = 'Hello'
 
   const res = await oraPromise(api.sendMessage(prompt), {
     text: prompt

@@ -5,7 +5,15 @@ export type Role = 'user' | 'assistant' | 'system'
 export type FetchFn = typeof fetch
 
 export type ChatGPTAPIOptions = {
-  apiKey: string
+  apiKey?: string
+
+  /** @defaultValue `false` */
+  isAigcaas?: boolean
+
+  /** aigcaas platform secret id */
+  aigcaasSecretId?: string
+  /** aigcaas platform secret key */
+  aigcaasSecretKey?: string
 
   /** @defaultValue `'https://api.openai.com'` **/
   apiBaseUrl?: string

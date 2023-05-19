@@ -14,6 +14,7 @@ export async function fetchSSE(
 ) {
   const { onMessage, onError, ...fetchOptions } = options
   const res = await fetch(url, fetchOptions)
+
   if (!res.ok) {
     let reason: string
 

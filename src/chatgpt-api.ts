@@ -7,6 +7,7 @@ import * as tokenizer from './tokenizer'
 import * as types from './types'
 import { fetch as globalFetch } from './fetch'
 import { fetchSSE } from './fetch-sse'
+import { getAigcaasSignHeaders } from './utils'
 
 const CHATGPT_MODEL = 'gpt-3.5-turbo'
 
@@ -18,6 +19,10 @@ export class ChatGPTAPI {
   protected _apiBaseUrl: string
   protected _apiOrg?: string
   protected _debug: boolean
+
+  protected _isAigcaas: boolean
+  protected _aigcaasSecretId: string
+  protected _aigcaasSecretKey: string
 
   protected _systemMessage: string
   protected _completionParams: Omit<
@@ -52,6 +57,9 @@ export class ChatGPTAPI {
     const {
       apiKey,
       apiOrg,
+      isAigcaas = false,
+      aigcaasSecretId,
+      aigcaasSecretKey,
       apiBaseUrl = 'https://api.openai.com/v1',
       debug = false,
       messageStore,
@@ -69,6 +77,19 @@ export class ChatGPTAPI {
     this._apiBaseUrl = apiBaseUrl
     this._debug = !!debug
     this._fetch = fetch
+
+    this._isAigcaas = isAigcaas
+    this._aigcaasSecretId = aigcaasSecretId
+    this._aigcaasSecretKey = aigcaasSecretKey
+    if (this._isAigcaas) {
+      if (!this._aigcaasSecretId || !this._aigcaasSecretKey) {
+        throw new Error(
+          'Aigcaas missing required aigcaasSecretId or aigcaasSecretKey'
+        )
+      }
+      this._apiBaseUrl =
+        'https://api.aigcaas.cn/product/chatgpt_chat/api/chat_com'
+    }
 
     this._completionParams = {
       model: CHATGPT_MODEL,
@@ -99,7 +120,7 @@ export class ChatGPTAPI {
       })
     }
 
-    if (!this._apiKey) {
+    if (!this._isAigcaas && !this._apiKey) {
       throw new Error('OpenAI missing required apiKey')
     }
 
@@ -181,23 +202,36 @@ export class ChatGPTAPI {
 
     const responseP = new Promise<types.ChatMessage>(
       async (resolve, reject) => {
-        const url = `${this._apiBaseUrl}/chat/completions`
-        const headers = {
+        const url = !this._isAigcaas
+          ? `${this._apiBaseUrl}/chat/completions`
+          : this._apiBaseUrl
+        let headers: Record<string, string> = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${this._apiKey}`
         }
-        const body = {
+        const body: Record<string, any> = {
           max_tokens: maxTokens,
           ...this._completionParams,
           ...completionParams,
-          messages,
-          stream
+          messages
         }
 
         // Support multiple organizations
         // See https://platform.openai.com/docs/api-reference/authentication
         if (this._apiOrg) {
           headers['OpenAI-Organization'] = this._apiOrg
+        }
+
+        // apply aigcaas headers
+        if (this._isAigcaas) {
+          body.original_response = 'true'
+          if (stream) {
+            body.stream = 'true'
+          }
+          headers = getAigcaasSignHeaders({
+            secretId: this._aigcaasSecretId,
+            secretKey: this._aigcaasSecretKey
+          })
         }
 
         if (this._debug) {
@@ -341,6 +375,8 @@ export class ChatGPTAPI {
       return responseP
     }
   }
+
+  requestAigcaas() {}
 
   get apiKey(): string {
     return this._apiKey

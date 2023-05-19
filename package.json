@@ -1,9 +1,9 @@
 {
-  "name": "chatgpt",
+  "name": "@aigcaas/chatgpt",
   "version": "5.2.4",
   "description": "Node.js client for the official ChatGPT API.",
-  "author": "Travis Fischer <travis@transitivebullsh.it>",
-  "repository": "transitive-bullshit/chatgpt-api",
+  "author": "yugasun",
+  "repository": "aigcaas/chatgpt-api",
   "license": "MIT",
   "type": "module",
   "source": "./src/index.ts",
@@ -21,7 +21,7 @@
   ],
   "bin": "./bin/cli.js",
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "scripts": {
     "build": "tsup",
@@ -71,6 +71,7 @@
     ]
   },
   "keywords": [
+    "aigcaas",
     "openai",
     "chatgpt",
     "chat",
