@@ -3,6 +3,9 @@
   "version": "5.2.4",
   "description": "Node.js client for the official ChatGPT API.",
   "author": "yugasun",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": "aigcaas/chatgpt-api",
   "license": "MIT",
   "type": "module",
