@@ -2,7 +2,7 @@
 
 > Node.js client for the official [ChatGPT](https://openai.com/blog/chatgpt/) API.
 
-[![NPM](https://img.shields.io/npm/v/chatgpt.svg)](https://www.npmjs.com/package/chatgpt) [![Build Status](https://github.com/aigcaas/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/aigcaas/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/aigcaas/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
+[![NPM](https://img.shields.io/npm/v/@aigcaas/chatgpt.svg)](https://www.npmjs.com/package/@aigcaas/chatgpt) [![Build Status](https://github.com/aigcaas/chatgpt-api/actions/workflows/test.yml/badge.svg)](https://github.com/aigcaas/chatgpt-api/actions/workflows/test.yml) [![MIT License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/aigcaas/chatgpt-api/blob/main/license) [![Prettier Code Formatting](https://img.shields.io/badge/code_style-prettier-brightgreen.svg)](https://prettier.io)
 
 - [Intro](#intro)
 - [Updates](#updates)
